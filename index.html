@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome Itz Fizz – Scroll-Driven Hero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0e1a3a;
+    --bg-low: #162654;
+    --road: #0a1230;
+    --ink: #f4efe4;
+    --muted: #a9b4d6;
+    --accent: #ffcf3f;
+    --accent-deep: #f28c28;
+  }
+  html { background: var(--bg); }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: "Manrope", system-ui, sans-serif;
+    background: var(--bg);
+  }
+
+  /* ---------- Hero ---------- */
+  #hero {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-low) 100%);
+  }
+  .headline {
+    font-family: "Syne", sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 5vw, 4.25rem);
+    line-height: 1;
+    gap: 0.4em 2.2em;
+  }
+  .letter {
+    display: inline-block;
+    margin-right: 0.45em;       /* the wide letter-spacing look */
+    will-change: transform, opacity;
+  }
+  .word { display: inline-flex; }
+  .word .letter:last-child { margin-right: 0; }
+
+  .stat { will-change: transform, opacity; }
+  .stat-num {
+    font-family: "Syne", sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-text { color: var(--muted); max-width: 17ch; font-size: 0.95rem; line-height: 1.4; }
+
+  /* ---------- Scene ---------- */
+  .sun {
+    position: absolute; right: 12%; bottom: 30%;
+    width: clamp(90px, 14vw, 190px); aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffe38a, var(--accent-deep));
+    opacity: 0.9; will-change: transform;
+  }
+  .road {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 22%;
+    background: var(--road);
+  }
+  .dashes {
+    position: absolute; left: 0; top: 48%;
+    width: 220%; height: 4px;
+    background: repeating-linear-gradient(90deg, var(--muted) 0 56px, transparent 56px 120px);
+    opacity: 0.55; will-change: transform;
+  }
+  #car {
+    position: absolute; left: 0; bottom: calc(22% - 14px);
+    width: clamp(230px, 34vw, 470px);
+    will-change: transform;
+  }
+  #car svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .speed {
+    position: absolute; right: 100%; top: 38%; width: 60%;
+    display: flex; flex-direction: column; gap: 12px; align-items: flex-end;
+    opacity: 0; transform-origin: right center;
+  }
+  .speed i { display: block; height: 3px; border-radius: 3px; background: var(--ink); }
+
+  .progress {
+    position: absolute; left: 0; bottom: 0; height: 4px; width: 100%;
+    background: var(--accent); transform: scaleX(0); transform-origin: left;
+  }
+  .hint {
+    position: absolute; left: 50%; bottom: 26%; translate: -50% 0;
+    color: var(--muted); font-size: 0.85rem; opacity: 0;
+  }
+  .after {
+    min-height: 80vh; display: grid; place-items: center; text-align: center; padding: 4rem 1.5rem;
+    background: var(--road);
+  }
+  @media (prefers-reduced-motion: reduce) { .hint { display: none; } }
+</style>
+</head>
+<body>
+
+<section id="hero" aria-label="Welcome to Itz Fizz">
+  <div class="relative z-10 flex flex-col items-center px-6 pt-[9vh] md:pt-[11vh]">
+    <h1 id="headline" class="headline flex flex-wrap justify-center text-center" aria-label="Welcome Itz Fizz">
+      <span class="word" aria-hidden="true">WELCOME</span>
+      <span class="word" aria-hidden="true">ITZ</span>
+      <span class="word" aria-hidden="true">FIZZ</span>
+    </h1>
+
+    <ul id="stats" class="mt-10 md:mt-14 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-14 text-center list-none p-0">
+      <li class="stat"><div class="stat-num"><span data-count="92">0</span>%</div><p class="stat-text mx-auto mt-2">of shoppers come back within a month</p></li>
+      <li class="stat"><div class="stat-num"><span data-count="78">0</span>%</div><p class="stat-text mx-auto mt-2">faster checkout for repeat orders</p></li>
+      <li class="stat"><div class="stat-num"><span data-count="64">0</span>%</div><p class="stat-text mx-auto mt-2">lift in basket size after launch</p></li>
+    </ul>
+  </div>
+
+  <div class="sun" id="sun"></div>
+  <p class="hint" id="hint">Scroll to drive</p>
+
+  <div class="road"><div class="dashes" id="dashes"></div></div>
+
+  <div id="car">
+    <div class="speed" id="speed"><i style="width:100%"></i><i style="width:70%"></i><i style="width:90%"></i></div>
+    <svg viewBox="0 0 400 150" role="img" aria-label="Yellow sports car">
+      <path d="M12 104 C12 88 24 80 44 76 L112 68 C132 40 160 28 196 28 L252 28 C282 28 308 48 324 70 L372 78 C388 82 392 92 392 104 L392 112 L12 112 Z" fill="#ffcf3f"/>
+      <path d="M12 104 L392 104 L392 112 L12 112 Z" fill="#f28c28"/>
+      <path d="M134 68 C148 48 168 38 196 38 L226 38 L226 68 Z" fill="#0e1a3a" opacity=".9"/>
+      <path d="M236 38 L252 38 C272 38 292 52 306 68 L236 68 Z" fill="#0e1a3a" opacity=".9"/>
+      <rect x="372" y="84" width="16" height="8" rx="3" fill="#fff6d6"/>
+      <rect x="12" y="86" width="12" height="8" rx="3" fill="#e5484d"/>
+      <g id="wheelA">
+        <circle cx="96" cy="114" r="32" fill="#0a1230"/><circle cx="96" cy="114" r="18" fill="#c9d1ea"/>
+        <path d="M96 98V130M80 114H112M85 103L107 125M107 103L85 125" stroke="#0a1230" stroke-width="4"/>
+      </g>
+      <g id="wheelB">
+        <circle cx="304" cy="114" r="32" fill="#0a1230"/><circle cx="304" cy="114" r="18" fill="#c9d1ea"/>
+        <path d="M304 98V130M288 114H320M293 103L315 125M315 103L293 125" stroke="#0a1230" stroke-width="4"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="progress" id="progress"></div>
+</section>
+
+<section class="after">
+  <p class="max-w-md" style="color:var(--muted)">The pinned hero ends here, and the page scrolls on as normal.</p>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(() => {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 1. Split headline into letters (kept in DOM order so we can stagger / spread them)
+  const letters = [];
+  document.querySelectorAll("#headline .word").forEach(word => {
+    const text = word.textContent;
+    word.textContent = "";
+    [...text].forEach(ch => {
+      const s = document.createElement("span");
+      s.className = "letter";
+      s.textContent = ch;
+      word.appendChild(s);
+      letters.push(s);
+    });
+  });
+
+  const stats = gsap.utils.toArray(".stat");
+  const counters = gsap.utils.toArray("[data-count]");
+  const mm = gsap.matchMedia();
+
+  // 2. Intro (time-based, runs once on load)
+  function intro() {
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    tl.from(letters, { y: 40, opacity: 0, filter: "blur(8px)", duration: 1, stagger: 0.045 })
+      .from(stats, { y: 30, opacity: 0, duration: 0.9, stagger: 0.22 }, "-=0.4")
+      .from("#car", { x: "-12vw", opacity: 0, duration: 1.1 }, "-=1.1")
+      .to("#hint", { opacity: 1, duration: 0.8 }, "-=0.2");
+    counters.forEach((el, i) => {
+      const obj = { v: 0 };
+      tl.to(obj, {
+        v: +el.dataset.count, duration: 1.4, ease: "power2.out",
+        onUpdate: () => (el.textContent = Math.round(obj.v))
+      }, 0.9 + i * 0.22);
+    });
+    return tl;
+  }
+
+  mm.add("(prefers-reduced-motion: no-preference)", () => {
+    const intro_tl = intro();
+
+    // 3. Scroll-driven timeline: progress = scroll position, scrub adds the easing lag
+    const car = document.querySelector("#car");
+    const travel = () => window.innerWidth - car.offsetWidth - window.innerWidth * 0.08;
+    const mid = (letters.length - 1) / 2;
+
+    const scroll = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: {
+        trigger: "#hero",
+        start: "top top",
+        end: "+=250%",
+        pin: true,
+        scrub: 1.2,
+        invalidateOnRefresh: true,
+        onEnter: () => gsap.to("#hint", { opacity: 0, duration: 0.3, overwrite: true })
+      }
+    });
+
+    scroll
+      // car drives left → right with a slight ease-in-out and a gentle scale-up
+      .fromTo(car, { x: () => window.innerWidth * 0.04 }, { x: travel, ease: "power1.inOut" }, 0)
+      .to(car, { scale: 1.12, transformOrigin: "50% 100%", ease: "power1.inOut" }, 0)
+      // wheels spin in proportion to distance travelled
+      .to(["#wheelA", "#wheelB"], { rotation: 1080, svgOrigin: (i) => (i ? "304 114" : "96 114") }, 0)
+      // road dashes slide opposite to the car for a sense of speed
+      .to("#dashes", { x: "-45%" }, 0)
+      // speed lines fade in mid-trip, out at the end
+      .to("#speed", { opacity: 0.6, scaleX: 1.2, duration: 0.2 }, 0.05)
+      .to("#speed", { opacity: 0, duration: 0.2 }, 0.8)
+      // sun parallax
+      .to("#sun", { y: 70, x: -60, scale: 0.9 }, 0)
+      // headline letters spread outward from the centre and fade
+      .to(letters, { x: (i) => (i - mid) * 14, opacity: 0.15, stagger: 0 }, 0.35)
+      // stats lift slightly and dim as the car passes
+      .to(stats, { y: -30, opacity: 0.35, stagger: 0.05 }, 0.5)
+      // progress bar
+      .to("#progress", { scaleX: 1 }, 0);
+
+    return () => { intro_tl.kill(); };
+  });
+
+  // Reduced motion: no scrubbing, just show the final content
+  mm.add("(prefers-reduced-motion: reduce)", () => {
+    counters.forEach(el => (el.textContent = el.dataset.count));
+    gsap.set("#car", { x: () => window.innerWidth * 0.3 });
+  });
+})();
+</script>
+</body>
+</html>
