@@ -2,7 +2,7 @@
 
 A hero section where a car drives across the screen as you scroll. The animation follows scroll position (not a timer), and the page is built with HTML, CSS, JavaScript, GSAP and Tailwind.
 
-**Live demo:** https://khushigupta1112.github.io/ITZFIZZ/
+**Live demo:** [https://khushigupta1112.github.io/ITZFIZZ/](https://khushigupta1112.github.io/ITZFIZZ_Assignment/)
 **Repository:** https://github.com/khushigupta1112/ITZFIZZ
 
 ## Features
